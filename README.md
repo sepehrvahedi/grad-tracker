@@ -2,6 +2,7 @@
 
 **Every UK graduate role in one list, ranked against your CV.** Runs on your laptop. No account, no API key,
 no cost. It never applies for you.
+Use it as a web page, from the terminal, or [from Claude Code](#use-it-from-claude-code).
 
 [![tests](https://github.com/sepehrvahedi/grad-tracker/actions/workflows/tests.yml/badge.svg)](https://github.com/sepehrvahedi/grad-tracker/actions/workflows/tests.yml)
 ![python](https://img.shields.io/badge/python-3.9%2B-informational)
@@ -31,6 +32,7 @@ git clone https://github.com/sepehrvahedi/grad-tracker && cd grad-tracker && ./r
 | Windows | `run.bat` |
 | Without cloning | `uvx --from git+https://github.com/sepehrvahedi/grad-tracker grad-tracker` |
 | Installed as a tool | `pipx install git+https://github.com/sepehrvahedi/grad-tracker`, then `grad-tracker` |
+| Inside Claude Code | `/plugin install grad-tracker --marketplace sepehrvahedi/grad-tracker` |
 
 ![First run: drop in your CV](docs/setup.png)
 
@@ -136,20 +138,34 @@ grad-tracker top --json --closing-within 7
 grad-tracker show <id>           # one role with its score breakdown
 grad-tracker status <id> applied --note "referral from Sam"
 grad-tracker add "Maya" ~/cv.pdf --available-from "September 2027" --visa yes
+grad-tracker add --sample        # a fictional CV, to look around
 ```
 
 Several people can share one install (a flatmate, a friend): each folder in `people/` is one person with their
 own CV, ranking and statuses.
 
-## Use it from an AI assistant
+## Use it from Claude Code
 
-[`skills/grad-jobs`](skills/grad-jobs/SKILL.md) is an agent skill built on the commands above. Copy the folder
-into your assistant's skills directory (for Claude Code: `~/.claude/skills/grad-jobs`), then ask things like
-"what should I apply to this week?" or "I applied to the Stripe one, note the referral".
+Grad Tracker is also a Claude Code plugin with one skill, `grad-jobs`. Install it in one step (Claude Code
+2.1.275 or later); the tool comes with it, so there is nothing else to set up:
 
-The split is deliberate: the Python does the fetching and the scoring, so the numbers are the same every time
-and you can read why. The assistant only does the talking. It is told never to invent a role, change a score
-or apply for you.
+```
+/plugin install grad-tracker --marketplace sepehrvahedi/grad-tracker
+```
+
+Then just ask:
+
+- "Set up my job search from ~/Documents/cv.pdf. I can start in September 2027 and I need sponsorship."
+- "What should I apply to this week?"
+- "Why did the Stripe role score 92?"
+- "I applied to the LSEG backend programme, note the referral from Sam."
+- "Draft the cover letter for the top one."
+
+The split is deliberate. The Python does the fetching and the scoring, so the numbers are the same every time
+and you can read why. The assistant only does the talking: it explains, plans your week, records what you did
+and drafts letters from your CV. Its instructions say never to invent a role, change a score or apply for you.
+The whole skill is one file, [`skills/grad-jobs/SKILL.md`](skills/grad-jobs/SKILL.md), and it works with any
+assistant that can read it and run shell commands.
 
 ## Development
 

@@ -1,0 +1,19 @@
+{
+  "name": "grad-tracker",
+  "owner": {
+    "name": "Sepehr Vahedi",
+    "url": "https://sepehrvahedi.github.io"
+  },
+  "metadata": {
+    "description": "Grad Tracker: UK graduate jobs, ranked against your CV, from your assistant."
+  },
+  "plugins": [
+    {
+      "name": "grad-tracker",
+      "source": "./",
+      "description": "Find and track UK graduate jobs. The tool does the collecting and the scoring; the assistant explains, plans your week and drafts letters.",
+      "category": "productivity",
+      "homepage": "https://github.com/sepehrvahedi/grad-tracker"
+    }
+  ]
+}

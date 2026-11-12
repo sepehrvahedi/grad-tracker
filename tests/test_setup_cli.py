@@ -148,3 +148,9 @@ def test_cli_add_and_setup_hint(empty, tmp_path, capsys):
     assert cli.main(["add", "Maya", str(SAMPLE_CV), "--visa", "yes", "--available-from", "September 2027"]) == 0
     assert [p.name for p in load_people(empty)] == ["Maya"]
     assert cli.main(["add", "Bad", str(tmp_path / "missing.pdf")]) == 1
+
+
+def test_cli_add_sample_cv(empty, capsys):
+    assert cli.main(["add", "--sample"]) == 0
+    assert [p.name for p in load_people(empty)] == ["Alex (sample)"]
+    assert cli.main(["add"]) == 1 and "Usage" in capsys.readouterr().err

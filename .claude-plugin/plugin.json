@@ -1,0 +1,13 @@
+{
+  "name": "grad-tracker",
+  "version": "0.2.0",
+  "description": "Find and track UK graduate jobs from your assistant. Collects roles from job boards, ranks them against your CV with a local, rule-based scorer, records your applications and drafts cover letters from your CV. Nothing leaves your machine, and it never applies for you.",
+  "author": {
+    "name": "Sepehr Vahedi",
+    "url": "https://sepehrvahedi.github.io"
+  },
+  "homepage": "https://github.com/sepehrvahedi/grad-tracker",
+  "repository": "https://github.com/sepehrvahedi/grad-tracker",
+  "license": "MIT",
+  "keywords": ["jobs", "graduate", "job-search", "cv", "uk", "career"]
+}

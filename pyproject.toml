@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grad-tracker"
-version = "0.1.0"
+version = "0.2.0"
 description = "Every UK graduate role in one list, ranked against your CV. Local, free, no API key."
 readme = "README.md"
 license = { text = "MIT" }

@@ -4,7 +4,7 @@
     grad-tracker demo            the same, with a fictional sample CV (try it before adding yours)
     grad-tracker serve           open the UI on the roles fetched last time
     grad-tracker update          fetch and score only
-    grad-tracker add NAME CV.pdf add a person from the terminal (the UI can do this too)
+    grad-tracker add NAME CV.pdf add a person from the terminal (the UI can do this too; --sample for a fictional CV)
     grad-tracker top             the best open roles as a table (--json for scripts and AI assistants)
     grad-tracker show ID         one role with its score breakdown
     grad-tracker status ID applied   record what you did
@@ -52,8 +52,9 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--rescore", action="store_true")
 
     c = sub.add_parser("add", parents=[common], help="add a person from a CV PDF")
-    c.add_argument("name")
-    c.add_argument("cv", type=Path)
+    c.add_argument("name", nargs="?", help="their first name")
+    c.add_argument("cv", nargs="?", type=Path, help="path to their CV (PDF)")
+    c.add_argument("--sample", action="store_true", help="add the fictional sample CV instead, to look around")
     c.add_argument("--looking-for", default="")
     c.add_argument("--available-from", default="", help='e.g. "September 2027"')
     c.add_argument("--visa", choices=("yes", "no", "unknown"), default="unknown", help="do you need visa sponsorship?")
@@ -147,16 +148,25 @@ def main(argv: list[str] | None = None) -> int:
     say = lambda m: print(m, flush=True)
 
     if a.command == "add":
-        if not a.cv.exists():
-            print(f"No such file: {a.cv}", file=sys.stderr)
+        if a.sample:
+            a.name, cv_path = a.name or "Alex (sample)", SAMPLE_CV
+            a.available_from, a.visa = a.available_from or "September 2027", "no" if a.visa == "unknown" else a.visa
+        elif not a.name or not a.cv:
+            print('Usage: grad-tracker add "Name" path/to/cv.pdf   (or: grad-tracker add --sample)', file=sys.stderr)
             return 1
+        else:
+            cv_path = a.cv
+        if not cv_path.exists():
+            print(f"No such file: {cv_path}", file=sys.stderr)
+            return 1
+        a.cv = cv_path
         try:
             p = tracker.add_person(a.name, a.cv.read_bytes(), looking_for=a.looking_for,
                                    available_from=a.available_from, needs_visa_sponsorship=a.visa)
         except ValueError as e:
             print(f"Could not add {a.name}: {e}", file=sys.stderr)
             return 1
-        say(f"Added {p.name}. Preferences are in {p.folder / 'person.yaml'}. Now run: grad-tracker")
+        say(f"Added {p.name}. Preferences are in {p.folder / 'person.yaml'}. Next: grad-tracker update")
         return 0
 
     if a.command in ("top", "show", "status", "prompt"):
