@@ -1,0 +1,107 @@
+# Where the tracker looks for graduate roles. To change it, copy this file to sources.yaml in your
+# grad-tracker folder, edit the copy, then click "Refresh".
+# Positions found in several places are merged into one (see applier/dedupe.py).
+
+# Trackr (the-trackr.com): curated UK graduate programmes with deadlines, visa and cover-letter details.
+# OFF by default: the robots.txt of Trackr's API asks automated clients to stay away. Only switch it on
+# if Trackr has told you that is fine for your use.
+trackr:
+  enabled: false
+  industries: [Tech, Finance, Engineering]
+
+# Company job boards with public APIs (Greenhouse, Lever, Ashby). Only UK roles are kept.
+# By default only graduate / new-grad / junior / 2027 roles are kept; all_levels: true keeps every
+# non-senior role (for small AI and science teams that rarely label roles as graduate).
+boards:
+  # quant and trading
+  - {name: Jane Street, ats: greenhouse, board: janestreet}
+  - {name: DRW, ats: greenhouse, board: drweng}
+  - {name: IMC Trading, ats: greenhouse, board: imc}
+  - {name: Squarepoint Capital, ats: greenhouse, board: squarepointcapital}
+  - {name: Tower Research Capital, ats: greenhouse, board: towerresearchcapital}
+  - {name: Man Group, ats: greenhouse, board: mangroup}
+  - {name: Hudson River Trading, ats: greenhouse, board: wehrtyou}
+  - {name: Jump Trading, ats: greenhouse, board: jumptrading}
+  - {name: Optiver, ats: greenhouse, board: optiverus}
+  - {name: Five Rings, ats: greenhouse, board: fiveringsllc}
+  - {name: XTX Markets, ats: greenhouse, board: xtxmarketstechnologies}
+  - {name: Winton, ats: greenhouse, board: winton}
+  - {name: Xantium, ats: greenhouse, board: xantium}
+  - {name: Mako Trading, ats: greenhouse, board: mako}
+  - {name: Quadrature, ats: ashby, board: quadrature}
+  # tech and AI
+  - {name: Palantir, ats: lever, board: palantir}
+  - {name: Stripe, ats: greenhouse, board: stripe}
+  - {name: Monzo, ats: greenhouse, board: monzo}
+  - {name: Wise, ats: greenhouse, board: wise}
+  - {name: Cloudflare, ats: greenhouse, board: cloudflare}
+  - {name: Datadog, ats: greenhouse, board: datadog}
+  - {name: Databricks, ats: greenhouse, board: databricks}
+  - {name: Anthropic, ats: greenhouse, board: anthropic}
+  - {name: OpenAI, ats: ashby, board: openai}
+  - {name: Cohere, ats: ashby, board: cohere}
+  - {name: ElevenLabs, ats: ashby, board: elevenlabs}
+  - {name: Synthesia, ats: ashby, board: synthesia}
+  - {name: Wayve, ats: ashby, board: wayve}
+  - {name: Graphcore, ats: greenhouse, board: graphcore}
+  - {name: PolyAI, ats: greenhouse, board: polyai}
+  - {name: Tractable, ats: ashby, board: tractable}
+  # AI x science and physics (all non-senior roles)
+  - {name: PhysicsX, ats: greenhouse, board: physicsx, all_levels: true}
+  - {name: Isomorphic Labs, ats: greenhouse, board: isomorphiclabs, all_levels: true}
+  - {name: Riverlane, ats: greenhouse, board: riverlane, all_levels: true}
+  - {name: CuspAI, ats: ashby, board: cuspai, all_levels: true}
+  - {name: Beyond Math, ats: ashby, board: beyondmath, all_levels: true}
+  - {name: Latent Labs, ats: ashby, board: latentlabs, all_levels: true}
+  - {name: Cradle, ats: ashby, board: cradlebio, all_levels: true}
+  - {name: Mind Foundry, ats: greenhouse, board: mindfoundry, all_levels: true}
+  - {name: Faculty, ats: ashby, board: faculty, all_levels: true}
+  - {name: Altos Labs, ats: greenhouse, board: altoslabs, all_levels: true}
+  - {name: Causaly, ats: ashby, board: causaly, all_levels: true}
+  - {name: IonQ, ats: greenhouse, board: ionq}
+  - {name: PsiQuantum, ats: greenhouse, board: psiquantum}
+  - {name: Rigetti, ats: lever, board: rigetti, all_levels: true}
+  - {name: IQM, ats: lever, board: iqm, all_levels: true}
+
+# jobs.ac.uk: research, data and scientific-computing roles at universities and institutes.
+jobs_ac_uk:
+  queries:
+    - data scientist
+    - machine learning
+    - scientific machine learning
+    - physics data
+    - research software engineer
+    - computational physics
+    - quantum computing
+    - graduate scientist
+
+# Graduate job boards. Each one's robots.txt allows these pages; set enabled: false to switch one off.
+# Gradcracker: search paths from gradcracker.com/search/... (graduate jobs only; 20 per page).
+gradcracker:
+  max_pages: 4
+  searches:
+    - technology-it/software-systems-graduate-jobs
+    - technology-it/ai-machine-learning-graduate-jobs
+    - technology-it/data-science-graduate-jobs
+
+# TARGETjobs: graduate jobs in these sectors whose deadline hasn't passed.
+targetjobs:
+  sectors: [Software engineering, Data science, Technology, Fintech, Web development]
+
+# Higherin (formerly RateMyPlacement): graduate jobs by role slug, from higherin.com/search-jobs/graduates/<slug>.
+higherin:
+  roles: [software-engineering, data-science, information-technology]
+
+# SheCanCode job board (mixed seniority, so only graduate / junior / early-career UK roles are kept).
+shecancode:
+  max_pages: 5
+
+# Adzuna UK job search (optional). Free keys at https://developer.adzuna.com, then add
+# ADZUNA_APP_ID=... and ADZUNA_APP_KEY=... to .env. Uses the "graduate jobs" category.
+adzuna:
+  queries:
+    - graduate data scientist
+    - graduate machine learning
+    - graduate physics
+    - graduate software engineer
+    - graduate quantitative

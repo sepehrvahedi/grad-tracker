@@ -1,0 +1,21 @@
+[
+  {
+    "id": "032gbd44r2", "groupId": "g1", "name": "Graduate Integration Developer", "companyId": "acturis",
+    "url": "https://careers.acturis.com/o/graduate-integration-developer-london?utm_source=Trackr&utm_medium=tracker&utm_campaign=UK_Tech_2027&source=trackr&ref=42",
+    "region": "UK", "industry": "Tech", "season": "2027", "type": "graduate-programmes",
+    "divisions": ["Tech|Software Engineering|Back-end"], "disciplines": [], "categories": ["Software Engineering", "Tech Consulting"],
+    "locations": [], "openingDate": "2026-08-25T00:00:00.000Z", "closingDate": "2026-12-21T00:00:00.000Z",
+    "rolling": null, "cv": true, "writtenAnswers": "No", "coverLetter": "Optional", "notes": null,
+    "company": {"id": "acturis", "name": "Acturis", "description": "Insurance technology platform based in London.", "sponsorsVisa": "No"}
+  },
+  {
+    "id": "closed01", "name": "Old Programme", "companyId": "oldco", "url": "https://example.com/old",
+    "categories": ["IT"], "openingDate": "2025-08-01T00:00:00.000Z", "closingDate": "2025-09-01T00:00:00.000Z",
+    "cv": true, "writtenAnswers": "Yes", "coverLetter": "Yes", "company": {"name": "OldCo", "sponsorsVisa": "Yes"}
+  },
+  {
+    "id": "future01", "name": "Future Programme", "companyId": "futco", "url": null,
+    "categories": ["AI and Machine Learning"], "openingDate": "2027-01-10T00:00:00.000Z", "closingDate": null,
+    "cv": true, "writtenAnswers": null, "coverLetter": null, "company": {"name": "FutCo", "sponsorsVisa": ""}
+  }
+]

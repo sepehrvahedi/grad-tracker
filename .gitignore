@@ -1,0 +1,15 @@
+# your own data never goes into git
+/people/
+/data/
+/sources.yaml
+/employers.yaml
+.env
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.DS_Store

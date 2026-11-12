@@ -1,0 +1,56 @@
+# The benchmark behind the README's claim: the local scorer against 290 roles an LLM had scored for this CV.
+# The CV is the author's public one (the same file as on sepehrvahedi.github.io).
+name: Benchmark
+cv: cv.pdf
+summary: >
+  MSc Software Systems Engineering at UCL, graduating Sep 2027. 3.5 years of production backend /
+  distributed systems / ML-serving work at a 10M+ user company (Kotlin, Java, Spring, Kafka, gRPC,
+  Kubernetes, NVIDIA Triton, Python, Go), promoted to Senior; LLM research (multi-agent test generation);
+  Codeforces Candidate Master. Lives in London.
+looking_for: A FULL-TIME graduate / new-grad engineering role starting from Sep 2027.
+fit_guide: >
+  backend, distributed systems, infrastructure, ML platform, quant/software dev = high; data analyst,
+  IT support, tech consulting, cyber-GRC, sales/business = low
+off_target: not an engineering role
+available_from: Sep 2027
+needs_visa_sponsorship: yes
+trackr_industries: [Tech, Finance]
+exclude:
+  - Finance:Middle Market
+  - Finance:Consulting
+  - Finance:Pensions and Insurance
+  - Finance:Accounting and Audit
+  - Finance:Big 4
+  - Finance:Real Estate
+  - Finance:Bulge Bracket
+  - Finance:Elite Boutique
+  - Finance:Asset Management
+  - Finance:Miscellaneous
+skip_sources: [jobs.ac.uk]
+# Local scoring (no LLM). Anything left out is detected from the CV (see detected.yaml after a refresh).
+scoring:
+  experience_years: 3.5
+  degree: msc
+  security_clearance_ok: no        # roles that need UK security clearance count as much harder
+  category_fit:                    # role-fit starting point per category (0-100)
+    Quant Developer: 88
+    AI and Machine Learning: 74
+    DevOps and Infrastructure: 70
+    Software Engineering: 68
+    Data Science: 52
+    Cyber Security: 45
+    Tech Consulting: 38
+    IT: 30
+    Trading and Quant: 55
+    Buy-Side: 50
+  great: [backend, distributed systems, infrastructure, platform, quant developer, quantitative developer,
+          low latency, ml platform, machine learning engineer, ml engineer, core engineering, trading systems]
+  good: [software engineer, software developer, software engineering, developer, ai engineer, cloud, devops,
+         site reliability, data engineer, research engineer, technologist]
+  weak: [frontend, front-end, front end, web developer, mobile, ios, android, qa, quality assurance, test analyst,
+         tester, embedded, firmware, hardware, silicon]
+  poor: [sap, erp, salesforce, servicenow, support, helpdesk, service desk, business analyst, data analyst,
+         consultant, consulting, sales, technician, trader, audit, accountant, marketing, recruiter, grc, governance,
+         analytics, digital innovation, advisory, growth, product manager, operations]
+  employer_fields: {quant: 8, bigtech: 6, ai: 6, consulting: -8, defence: -6}
+  eligible_groups: []              # e.g. [women] makes "Women in Tech" programmes count; others are marked off target

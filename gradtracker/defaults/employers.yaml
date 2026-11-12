@@ -1,0 +1,75 @@
+# Employer tiers for the local scorer (no LLM). Edit freely; the next refresh re-scores.
+#
+# tier sets career value (reputation, learning, pay) and selectivity (how hard it is to get in):
+#   elite     - hires well under 1% of applicants; top pay and reputation
+#   top       - very selective, excellent reputation
+#   strong    - well-known, good programmes
+#   (anything not listed is "standard", unless Trackr's category says otherwise)
+#   weak      - train-and-place schemes or roles with little engineering growth
+# fields are matched against each person's `employer_fields` bonuses in person.yaml
+# (quant, bigtech, ai, science, bank, fintech, energy, defence, consulting, academia).
+
+elite:
+  quant: [Jane Street, Hudson River Trading, Citadel, Citadel Securities, Jump Trading, DRW, Radix Trading,
+          Susquehanna International Group, Quadrature, Five Rings, XTX Markets, Optiver, Two Sigma, D. E. Shaw,
+          G-Research, Tower Research Capital, Headlands Technologies, Rokos Capital Management, GSA Capital,
+          Millennium Management, Point72, Graviton, Chicago Trading Company]
+  bigtech: [Google, Apple, Meta, Stripe, Palantir, Bloomberg, Databricks, Figma, Nvidia]
+  ai: [Google DeepMind, DeepMind, Anthropic, OpenAI, Mistral AI, Scale AI, Isomorphic Labs]
+
+top:
+  quant: [IMC Trading, Squarepoint Capital, Marshall Wace, Xantium, Da Vinci Trading, Flow Traders, Qube RT,
+          Maven Securities, ExodusPoint, Man Group, Winton, Mako Trading, DV Trading, Capula Investment Management,
+          B2C2, Dirac Trading Group, Balyasny, Aspect Capital, Bastion Trading, Aequitas Research, JJJ Capital Management,
+          Keyrock, Vitol, Mercuria, Trafigura]
+  bigtech: [Amazon, Microsoft, TikTok, ByteDance, Tencent, MongoDB, Arm, Cloudflare, Datadog, Snowflake, Spotify,
+            Booking.com, Uber, Airbnb, Affirm, Bending Spoons, Revolut, Wise, Monzo, Deliveroo, Checkout.com,
+            incident.io, Ocado Technology]
+  ai: [Cohere, ElevenLabs, Synthesia, Wayve, Faculty, PolyAI, Hugging Face, Graphcore]
+  science: [PhysicsX, Riverlane, CuspAI, Beyond Math, Latent Labs, Cradle, Mind Foundry, Altos Labs, Quantinuum,
+            PsiQuantum, IonQ, Oxford Ionics, Phasecraft, Oxford Quantum Circuits, Tokamak Energy, First Light Fusion,
+            UK Atomic Energy Authority, The Francis Crick Institute]
+
+strong:
+  bank: [Goldman Sachs, Morgan Stanley, J.P. Morgan, Macquarie Group, London Stock Exchange Group, RBC Capital Markets,
+         Citi, Barclays, HSBC, UBS, BNP Paribas, Deutsche Bank, Jefferies, NatWest Markets, Standard Chartered,
+         Bank of America, Wells Fargo, Nomura, Mizuho, MUFG, TD Securities, ING, Commerzbank, Marex, KKR, Blackstone,
+         BlackRock, Schroders, Fidelity International, Rothesay, GIC, ICG, Centerview Partners, Bank of England]
+  fintech: [American Express, Mastercard, Visa, iwoca, Titanbay, Clearwater Analytics, ION, Data Intellect]
+  bigtech: [Sky, Vodafone, BT, RELX, Veeva, KLA Corporation, Cirrus Logic, Redgate, Softwire, Netcraft, AVEVA,
+            Compare The Market, Tesco, Framestore]
+  science: [Met Office, National Physical Laboratory and UK Telecoms Lab, National Physical Laboratory,
+            STFC - The Science and Technology Facilities Council, Science & Technology Facilities Council,
+            UK National Nuclear Laboratory, National Oceanography Centre, Medical Research Council (MRC),
+            Satellite Applications Catapult, TTP, Cambridge Consultants, Diffractive Labs, Aurora Energy Research,
+            Alan Turing Institute, The Alan Turing Institute, Siemens Healthineers, GSK, AstraZeneca]
+  energy: [bp, Shell, National Grid, NESO, National Energy System Operator, Siemens Energy, GE Vernova, RWE,
+           ScottishPower, EDF, Octopus Energy]
+  defence: [BAE Systems, Rolls-Royce, Airbus, Thales, Leonardo, MBDA, QinetiQ, Frazer-Nash Consultancy, Boeing,
+            Safran, Northrop Grumman, Lockheed Martin, Raytheon, RTX, General Dynamics, L3Harris Technologies, Leidos,
+            Babcock, PentenAmio, Roke, AWE, Dstl, GCHQ, Ultra Electronics, Chemring, SAAB, Textron, KBR]
+  automotive: [Mercedes AMG HPP, Mercedes-AMG, Aston Martin F1, Aston Martin, McLaren, Jaguar Land Rover]
+  consulting: [PwC, Deloitte, EY, KPMG, Accenture, Capco, Baringa, PA Consulting, PA Consulting Group, BCG,
+               Boston Consulting Group, McKinsey, Bain, Oliver Wyman, Alvarez & Marsal, Kearney, Strategy&,
+               L.E.K. Consulting, OC&C, Newton, Elixirr, North Highland, Arup, AtkinsRéalis, WSP, Mott MacDonald,
+               Jacobs, AECOM]
+
+weak:
+  consulting: [FDM Group, GRAYCE, Sparta Global, Capgemini, CGI, TCS, Tata Consultancy Services, Infosys, Wipro, UST,
+               Cognizant, HCLTech, AmplifyME]
+
+# Domains: employers that belong to a domain whatever the job title says (used by the domain filter and by
+# person.yaml `scoring.preferred_domains`). Domain keys: physics, finance, health, energy, defence, transport,
+# ai, tech, construction, public, consumer.
+domains:
+  physics: [PhysicsX, Riverlane, UK Atomic Energy Authority, National Physical Laboratory and UK Telecoms Lab,
+            National Physical Laboratory, STFC - The Science and Technology Facilities Council,
+            Science & Technology Facilities Council, Met Office, Quantinuum, PsiQuantum, IonQ, Oxford Ionics,
+            Phasecraft, Oxford Quantum Circuits, Tokamak Energy, First Light Fusion, UK National Nuclear Laboratory,
+            Beyond Math, CuspAI, National Oceanography Centre, Satellite Applications Catapult, Rigetti, IQM,
+            Diffractive Labs, Malvern Panalytical, TWI, Bramble CFD]
+  health: [Isomorphic Labs, Altos Labs, Cradle, Latent Labs, GSK, AstraZeneca, The Francis Crick Institute,
+           Medical Research Council (MRC), Siemens Healthineers, Causaly]
+  ai: [Google DeepMind, DeepMind, Anthropic, OpenAI, Mistral AI, Scale AI, Cohere, ElevenLabs, Synthesia, Wayve,
+       Faculty, PolyAI, Mind Foundry, Tractable]
+  energy: [bp, Shell, National Grid, NESO, National Energy System Operator, Octopus Energy, EDF, RWE, ScottishPower]

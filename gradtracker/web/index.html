@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grad Tracker</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script>
+    // Apply the saved theme before first paint.
+    try {
+      var t = new URLSearchParams(location.search).get("theme") || JSON.parse(localStorage.getItem("tracker.theme") || '"auto"');
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="mark" href="/" aria-label="Grad Tracker">grad<span>/</span>tracker</a>
+    <select id="person" class="person" title="Whose list to show" aria-label="Person"></select>
+    <p class="meta" id="meta">Loading…</p>
+    <div class="stats" id="stats"></div>
+    <div class="actions">
+      <button class="btn ghost" id="btn-keys" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">?</button>
+      <button class="btn ghost" id="btn-theme" title="Light, dark or automatic">Theme: auto</button>
+      <button class="btn ghost" id="btn-weights" title="Change what matters in the score">Weights</button>
+      <button class="btn" id="btn-refresh" title="Fetch every source again and re-score">Refresh</button>
+    </div>
+  </header>
+
+  <div class="banner hidden" id="refresh-banner" role="status"></div>
+  <div class="banner hidden" id="person-banner" role="status"></div>
+
+  <!-- First run: nobody set up yet -->
+  <section class="setup hidden" id="setup" aria-labelledby="setup-title">
+    <div class="setup-copy">
+      <p class="kicker">First run</p>
+      <h1 id="setup-title">Drop in your CV.<br>Get every graduate role, ranked for you.</h1>
+      <p>Grad Tracker reads your CV on this computer, fetches graduate roles from the job boards, and scores each
+        one against what is in your CV. Nothing is uploaded anywhere, and it never applies for you.</p>
+      <p class="muted">Your files are kept in <code id="setup-home"></code></p>
+    </div>
+    <form class="setup-form" id="setup-form">
+      <label class="drop" id="drop" tabindex="0">
+        <input type="file" id="cv-file" accept="application/pdf,.pdf" hidden>
+        <span class="drop-title" id="drop-title">Drop your CV here (PDF)</span>
+        <span class="drop-hint" id="drop-hint">or click to choose a file</span>
+      </label>
+      <label>Your name<input id="su-name" required maxlength="60" autocomplete="name" placeholder="e.g. Maya"></label>
+      <div class="pair">
+        <label>When can you start?<input id="su-start" maxlength="40" placeholder="e.g. September 2027"></label>
+        <label>Need visa sponsorship?
+          <select id="su-visa"><option value="unknown">Not sure</option><option value="yes">Yes</option><option value="no">No</option></select>
+        </label>
+      </div>
+      <label>What are you looking for? <span class="muted">(optional)</span>
+        <input id="su-looking" maxlength="200" placeholder="e.g. backend or data engineering graduate roles"></label>
+      <div class="setup-actions">
+        <button class="btn" id="su-go" type="submit">Find my roles</button>
+        <button class="btn ghost" id="su-sample" type="button">Try it with a sample CV</button>
+        <button class="btn ghost hidden" id="su-cancel" type="button">Cancel</button>
+      </div>
+      <p class="error hidden" id="su-error" role="alert"></p>
+    </form>
+  </section>
+
+  <div class="app" id="app">
+    <aside class="side" id="side" aria-label="Filters">
+      <nav class="group" aria-label="My status">
+        <h2>List</h2>
+        <div class="facet" id="tabs">
+          <button data-tab="todo" class="tab active">To apply</button>
+          <button data-tab="progress" class="tab">In progress</button>
+          <button data-tab="done" class="tab">Rejected / not interested</button>
+          <button data-tab="all" class="tab">All</button>
+        </div>
+      </nav>
+      <div class="finder">
+        <div class="group"><h2>Role</h2><div class="facet" id="role-chips"></div></div>
+        <div class="group"><h2>Domain</h2><div class="facet" id="domain-chips"></div>
+          <input id="f-domain" list="domain-list" placeholder="or type: physics, climate…" autocomplete="off" aria-label="Domain">
+          <datalist id="domain-list"></datalist>
+        </div>
+      </div>
+      <div class="group">
+        <h2>Only show</h2>
+        <label class="chk"><input type="checkbox" id="f-week"> Closing within 7 days</label>
+        <label class="chk"><input type="checkbox" id="f-new"> New since last refresh</label>
+        <label class="chk"><input type="checkbox" id="f-letter"> Wants a cover letter</label>
+        <label class="min">Score at least <input type="number" id="f-min" min="0" max="100" step="5" value="0"></label>
+      </div>
+    </aside>
+
+    <main>
+      <div class="toolbar">
+        <button class="btn ghost side-toggle" id="side-toggle" aria-controls="side" aria-expanded="false">Filters</button>
+        <input id="f-search" type="search" placeholder="Search company, title, place…  ( / )" aria-label="Search">
+        <select id="f-source" title="Where the listing came from" aria-label="Source"></select>
+        <select id="f-trackr" title="Listing status" aria-label="Listing status">
+          <option value="open">Open now</option>
+          <option value="open_upcoming">Open + upcoming</option>
+          <option value="any">Any (incl. closed)</option>
+        </select>
+        <select id="f-sort" title="Sort" aria-label="Sort">
+          <option value="score">Best score first</option>
+          <option value="closing">Closing soonest</option>
+          <option value="company">Company A to Z</option>
+          <option value="new">Newest first</option>
+        </select>
+        <span class="count" id="count"></span>
+      </div>
+      <table class="grid">
+        <thead>
+          <tr>
+            <th class="c-score">Score</th>
+            <th>Role</th>
+            <th class="c-area">Type · domain</th>
+            <th class="c-close">Closes</th>
+            <th class="c-small">Letter</th>
+            <th class="c-small">Visa</th>
+            <th class="c-small">Listing</th>
+            <th class="c-status">My status</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty hidden" id="empty"></div>
+    </main>
+  </div>
+
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <div class="d-company" id="d-company"></div>
+        <h2 id="d-title"></h2>
+      </div>
+      <button class="btn ghost" id="d-close" aria-label="Close">Close</button>
+    </div>
+    <div class="drawer-body" id="d-body"></div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <dialog id="weights">
+    <form method="dialog" class="w-form">
+      <h2>What matters to you</h2>
+      <p class="hint">Score = weighted average of role fit, competitiveness and career value, plus visa and location points, then capped by red flags. Saving re-ranks everything at once.</p>
+      <div id="w-fields" class="w-grid"></div>
+      <div class="w-actions">
+        <button class="btn ghost" value="reset" id="w-reset">Reset to defaults</button>
+        <span class="spacer"></span>
+        <button class="btn ghost" value="cancel">Cancel</button>
+        <button class="btn" value="save" id="w-save">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="keys">
+    <form method="dialog" class="w-form">
+      <h2>Keyboard</h2>
+      <dl class="keys">
+        <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>next / previous role</dd>
+        <dt><kbd>Enter</kbd></dt><dd>open the selected role</dd>
+        <dt><kbd>o</kbd></dt><dd>open its application page</dd>
+        <dt><kbd>a</kbd></dt><dd>mark as applied</dd>
+        <dt><kbd>x</kbd></dt><dd>not interested</dd>
+        <dt><kbd>u</kbd></dt><dd>back to "to apply"</dd>
+        <dt><kbd>/</kbd></dt><dd>search</dd>
+        <dt><kbd>r</kbd></dt><dd>refresh every source</dd>
+        <dt><kbd>Esc</kbd></dt><dd>close</dd>
+      </dl>
+      <div class="w-actions"><span class="spacer"></span><button class="btn" value="cancel">Done</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
